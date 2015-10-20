@@ -8,7 +8,7 @@ Lintrules is a [Gradle](https://www.gradle.org) plugin that allows you to:
 Installation
 ------------
 
-To use the plugin with Gradle 2.1 or later, add the following to your build.gradle file.
+To use the plugin with Gradle 2.1 or later, add the following to your `build.gradle`:
 
 ```groovy
 plugins {
@@ -16,18 +16,18 @@ plugins {
 }
 ```
 
-To use the plugin with Gradle 2.0 or older, add the following to build.gradle:
+To use the plugin with Gradle 2.0 or older, add the following to `build.gradle`:
 
 ```groovy
 buildscript {
-   repositories {
-      maven {
-         url "https://plugins.gradle.org/m2/"
-      }
-   }
-    dependencies {
-        classpath 'com.kageiit:lintrules:1.+'
+  repositories {
+    maven {
+      url 'https://plugins.gradle.org/m2/'
     }
+  }
+  dependencies {
+    classpath 'gradle.plugin.com.kageiit:lintrules:1.+'
+  }
 }
 ```
 
@@ -41,7 +41,7 @@ apply plugin: 'com.android.application' // or apply plugin: 'com.android.library
 apply plugin: 'com.kageiit.lintrules'
 
 dependencies {
-    lintRules project(':lint')
+  lintRules project(':lint')
 }
 ```
 

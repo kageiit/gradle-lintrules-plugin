@@ -10,7 +10,17 @@ import org.gradle.api.tasks.Copy
 class LintRulesPlugin implements Plugin<Project> {
 
     void apply(Project project) {
-        if (!project.plugins.hasPlugin('com.android.library')) {
+        def lintJarName
+        def lintDir
+
+        if (project.plugins.hasPlugin('com.android.library')) {
+            lintJarName = "lint.jar"
+            lintDir = "${project.buildDir}/intermediates/lint/"
+        } else if (project.plugins.hasPlugin('com.android.application')) {
+            lintJarName = null
+            lintDir = "${System.getProperty("user.home")}/.android/lint"
+            new File(lintDir).mkdirs()
+        } else {
             throw new IllegalStateException("Can only be applied on android library projects.")
         }
 
@@ -28,12 +38,13 @@ class LintRulesPlugin implements Plugin<Project> {
                     }
 
                     from(lintRulesProject.files(lintRulesProject.tasks.getByName('jar').archivePath)) {
-                        rename {
-                            String fileName ->
-                                'lint.jar'
+                        if (lintJarName != null) {
+                            rename {
+                                String fileName -> lintJarName
+                            }
                         }
                     }
-                    into "${project.buildDir}/intermediates/lint/"
+                    into lintDir
                 } else {
                     throw new IllegalStateException("Only project dependencies are supported.")
                 }

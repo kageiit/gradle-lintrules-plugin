@@ -1,21 +1,43 @@
 gradle-lintrules-plugin
-======================
+=======================
 
-Lintrules is a [Gradle](https://www.gradle.org) plugin that allows bundling custom lint rules with AARs.
+Lintrules is a [Gradle](https://www.gradle.org) plugin that allows you to:
+- Run custom lint rules on android application projects.
+- Bundle custom lint rules with AARs.
 
-Usage
------
-Add the following to buildscript:
+Installation
+------------
+
+To use the plugin with Gradle 2.1 or later, add the following to your build.gradle file.
+
+```groovy
+plugins {
+  id 'com.kageiit.lintrules' version '1.1.0'
+}
+```
+
+To use the plugin with Gradle 2.0 or older, add the following to build.gradle:
+
 ```groovy
 buildscript {
+   repositories {
+      maven {
+         url "https://plugins.gradle.org/m2/"
+      }
+   }
     dependencies {
         classpath 'com.kageiit:lintrules:1.+'
     }
 }
 ```
 
-Apply and configure lintrules like so:
+Usage
+-----
+
+Assuming that your custom lint rules are in a project named `lint`, you can apply them to an application project or bundle them with the AAR of a library project like so:
+
 ```groovy
+apply plugin: 'com.android.application' // or apply plugin: 'com.android.library'
 apply plugin: 'com.kageiit.lintrules'
 
 dependencies {

@@ -51,6 +51,10 @@ class LintRulesPlugin implements Plugin<Project> {
             }
         }
 
+        def cleanup = project.tasks.create('cleanup')  << {
+            new File(new File(lintDir), lintRulesProject.tasks.getByName('jar').archiveName).delete()
+        }
+
         project.afterEvaluate {
             DependencySet lintRulesDependencies = lintRules.getAllDependencies()
             if (lintRulesDependencies.size() == 0) {
@@ -60,13 +64,20 @@ class LintRulesPlugin implements Plugin<Project> {
             }
 
             def jarTask = lintRulesProject.tasks.getByName('jar')
-            def compileLintTask = project.tasks.getByName('compileLint')
-            compileLintTask.dependsOn(copyLintJarTask)
             copyLintJarTask.dependsOn(jarTask)
 
             if (project.plugins.hasPlugin('com.android.application')) {
-                new File(new File(lintDir), jarTask.archiveName).deleteOnExit()
+                project.tasks.findAll {
+                    it.name.startsWith('lint')
+                }.each {
+                    it.dependsOn(copyLintJarTask)
+                    it.finalizedBy(cleanup)
+                }
+            } else {
+                def compileLintTask = project.tasks.getByName('compileLint')
+                compileLintTask.dependsOn(copyLintJarTask)
             }
         }
     }
 }
+

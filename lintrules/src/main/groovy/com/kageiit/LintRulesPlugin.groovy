@@ -59,9 +59,14 @@ class LintRulesPlugin implements Plugin<Project> {
                 throw new IllegalStateException("Only one lint rules dependency is supported.")
             }
 
+            def jarTask = lintRulesProject.tasks.getByName('jar')
             def compileLintTask = project.tasks.getByName('compileLint')
             compileLintTask.dependsOn(copyLintJarTask)
-            copyLintJarTask.dependsOn(lintRulesProject.tasks.getByName('jar'))
+            copyLintJarTask.dependsOn(jarTask)
+
+            if (project.plugins.hasPlugin('com.android.application')) {
+                new File(new File(lintDir), jarTask.archiveName).deleteOnExit()
+            }
         }
     }
 }

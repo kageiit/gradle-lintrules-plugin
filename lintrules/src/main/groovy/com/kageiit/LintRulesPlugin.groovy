@@ -76,6 +76,7 @@ class LintRulesPlugin implements Plugin<Project> {
             } else {
                 def compileLintTask = project.tasks.getByName('compileLint')
                 compileLintTask.dependsOn(copyLintJarTask)
+                compileLintTask.dependsOn(cleanup)
             }
         }
     }

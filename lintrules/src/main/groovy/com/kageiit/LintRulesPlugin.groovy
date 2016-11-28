@@ -51,7 +51,7 @@ class LintRulesPlugin implements Plugin<Project> {
             }
         }
 
-        def cleanup = project.tasks.create('cleanup')  << {
+        def cleanup = project.tasks.create('cleanup').doLast {
             new File(new File(lintDir), lintRulesProject.tasks.getByName('jar').archiveName).delete()
         }
 
@@ -80,4 +80,3 @@ class LintRulesPlugin implements Plugin<Project> {
         }
     }
 }
-

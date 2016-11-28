@@ -12,7 +12,7 @@ To use the plugin with Gradle 2.1 or later, add the following to your `build.gra
 
 ```groovy
 plugins {
-  id 'com.kageiit.lintrules' version '1.1.2'
+  id 'com.kageiit.lintrules' version '1.1.3'
 }
 ```
 
